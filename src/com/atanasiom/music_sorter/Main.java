@@ -26,9 +26,29 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
-	private final int WIDTH = 400, HEIGHT = 200;
+	/**
+	 * The width of the GUI
+	 */
+	private final int WIDTH = 400;
+	/**
+	 * The height of the GUI
+	 */
+	private final int HEIGHT = 200;
 
+	// I am using two ArrayLists for this program. This is because the AudioFile
+	// can take a normal File object to create itself. I also figured this was
+	// easier than constantly creating new AudioFile objects every time I wanted
+	// to read Tag information
+
+	/**
+	 * The ArrayList that will contain each song that needs to be sorted. These
+	 * are stored as standard File objects.
+	 */
 	private ArrayList<File> fileList = new ArrayList<File>();
+	/**
+	 * The ArrayList that will contain each song that needs to be sorted. These
+	 * are stored as AudioFile objects.
+	 */
 	private ArrayList<AudioFile> audioList = new ArrayList<AudioFile>();
 
 	private TextField pathField = new TextField();
