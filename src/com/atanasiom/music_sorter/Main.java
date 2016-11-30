@@ -67,6 +67,7 @@ public class Main extends Application {
 			finishedText.setText("");
 			fixMusic(pathField.getText());
 		});
+
 		pathField.setOnKeyReleased(e -> {
 			checkDirectory(pathField.getText());
 		});
@@ -83,6 +84,7 @@ public class Main extends Application {
 
 		fixButton.setOnAction(e -> {
 			finishedText.setText("");
+			// Fixes the music
 			fixMusic(pathField.getText());
 		});
 
@@ -117,7 +119,8 @@ public class Main extends Application {
 	 * <br>
 	 * Calls:<br>
 	 * {@link #getFileList(File)}<br>
-	 * {@link #moveFiles()}
+	 * {@link #moveFilesOutOfFolders()}<br>
+	 * {@link #moveFilesIntoFolders()}
 	 * 
 	 * @param path
 	 *            the main path where the music lies
@@ -133,7 +136,8 @@ public class Main extends Application {
 
 		if (checkDirectory(path)) {
 			getFileList(mainDirectory);
-			moveFiles();
+			moveFilesOutOfFolders();
+			moveFilesIntoFolders();
 
 			finishedText.setFill(Color.GREEN);
 			finishedText.setText("Done!");
@@ -142,9 +146,12 @@ public class Main extends Application {
 	}
 
 	/**
+	 * Moves music files into folders. Music will be in folders that are named
+	 * after their album, then those folders will be in a folder with their
+	 * artist name.
 	 * 
 	 */
-	private void moveFiles() {
+	private void moveFilesIntoFolders() {
 		for (int idx = 0; idx < audioList.size(); idx++) {
 			File currFile = fileList.get(idx);
 			AudioFile currAudio = audioList.get(idx);
@@ -154,6 +161,13 @@ public class Main extends Application {
 		// TODO FOR TESTING PURPOSES
 		renameFile(0, audioList.get(0).getTag().getFirst(FieldKey.TITLE),
 				audioList.get(0).getTag().getFirst(FieldKey.TRACK));
+	}
+
+	/**
+	 * 
+	 */
+	private void moveFilesOutOfFolders() {
+
 	}
 
 	/**
