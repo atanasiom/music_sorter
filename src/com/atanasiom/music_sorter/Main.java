@@ -6,13 +6,13 @@ import java.util.ArrayList;
 
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
-import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -57,6 +57,7 @@ public class Main extends Application {
 	private Text directoryText = new Text();
 	private Text finishedText = new Text();
 	private DirectoryChooser dc = new DirectoryChooser();
+	private ProgressBar pb = new ProgressBar(0);
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -100,6 +101,7 @@ public class Main extends Application {
 		pane.add(fixButton, 1, 1);
 		pane.add(directoryText, 1, 2);
 		pane.add(finishedText, 1, 3);
+		pane.add(pb, 1, 4);
 
 		pane.setOnMouseClicked(e -> {
 			pane.requestFocus();
@@ -127,6 +129,9 @@ public class Main extends Application {
 	 */
 	private void fixMusic(String path) {
 
+		// Clears the file and audio list in preparation for a new fix. It does
+		// this just in case the user has previously tried to fix the music, in
+		// which case, the lists would be full
 		fileList.clear();
 		audioList.clear();
 
@@ -136,7 +141,7 @@ public class Main extends Application {
 
 		if (checkDirectory(path)) {
 			getFileList(mainDirectory);
-			moveFilesOutOfFolders();
+			moveFilesOutOfFolders(mainDirectory);
 			moveFilesIntoFolders();
 
 			finishedText.setFill(Color.GREEN);
@@ -159,14 +164,19 @@ public class Main extends Application {
 		}
 
 		// TODO FOR TESTING PURPOSES
-		renameFile(0, audioList.get(0).getTag().getFirst(FieldKey.TITLE),
-				audioList.get(0).getTag().getFirst(FieldKey.TRACK));
+		// renameFile(0, audioList.get(0).getTag().getFirst(FieldKey.TITLE),
+		// audioList.get(0).getTag().getFirst(FieldKey.TRACK));
 	}
 
 	/**
+	 * Moves any music that is contained within folders or subfolders out of
+	 * them and puts them into the main directory. With this completed, the
+	 * music can then be put into containing folders that are named correctly
 	 * 
+	 * @param mainDirectory
+	 *            the main directory that the music resides in
 	 */
-	private void moveFilesOutOfFolders() {
+	private void moveFilesOutOfFolders(File mainDirectory) {
 
 	}
 
@@ -225,7 +235,11 @@ public class Main extends Application {
 	}
 
 	/**
+	 * Adds each song to both a list containing {@link File} objects and a list
+	 * containing {@link AudioFile} objects.
+	 * 
 	 * @param mainDirectory
+	 *            the main directory that the music resides in
 	 */
 	private void getFileList(File mainDirectory) {
 		for (File f : mainDirectory.listFiles()) {
@@ -246,6 +260,14 @@ public class Main extends Application {
 		}
 	}
 
+	/**
+	 * Returns the file extension (.mp3, .m4a, etc.) of the given {@link File}
+	 * object
+	 * 
+	 * @param file
+	 *            the File that you need to get the extension from
+	 * @return the File's extension
+	 */
 	private String getExtension(String file) {
 		return file.substring(file.lastIndexOf("."), file.length());
 	}
